@@ -1,6 +1,10 @@
 package com.example.demo.storage;
 
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +47,18 @@ public class StorageController {
             return ResponseEntity.ok(storageService.listAllFiles());
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error listing files");
+        }
+    }
+
+    @GetMapping("/listfoldertree")
+    public ResponseEntity<?> getFiletree() {
+        try {
+            Path location = Paths.get("pdf-storage");
+            List<FileNode> tree = storageService.listFilesAndFolders(location);
+            return ResponseEntity.ok(tree);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error listing files: " + e.getMessage());
         }
     }
 

@@ -1,0 +1,41 @@
+[
+  {
+    "name": "2025",
+    "isFolder" : true,
+    "path" : "2025",
+    "children" : [
+      {
+        "name": "May",
+        "isFolder" : true,
+        "path" : "2025/May",
+        "children" : [
+          {
+            "name" : "Benson.pdf",
+            "isFolder" : false,
+            "path" : "2025/05/benson.pdf"
+          }
+        ]
+      },
+      {
+        "name": "Apr",
+        "isFolder" : true,
+        "path" : "2025/Apr",
+        "children" : [
+          {
+            "name" : "John Doe.pdf",
+            "isFolder" : false,
+            "path" : "2025/04/John Doe.pdf"
+          }
+        ]
+      }
+
+    ]
+  },
+  {
+    "name" : "2024",
+    "isFolder" : true,
+    "path" : "2024",
+    "children" : [
+      ]
+  }
+]

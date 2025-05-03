@@ -25,12 +25,12 @@ public class InvoiceController {
         try {
             byte[] pdf = invoiceService.generateInvoice(studentId, name, rate, date, day);
             storageService.saveInvoice(pdf, name+".pdf", date);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_PDF);
-            headers.setContentDisposition(ContentDisposition.builder("attachment")
-                    .filename("invoice_" + studentId + ".pdf").build());
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.setContentType(MediaType.APPLICATION_PDF);
+//            headers.setContentDisposition(ContentDisposition.builder("attachment")
+//                    .filename("invoice_" + studentId + ".pdf").build());
 
-            return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             // Invalid input, return 400 Bad Request
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)

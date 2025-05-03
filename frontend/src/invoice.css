@@ -1,0 +1,39 @@
+.container{
+    text-align: left;
+    padding-left: 20px;
+    padding-top:10px;
+    padding-bottom:10px;
+    font-size: 25px;
+}
+
+.filebox{
+    padding-top: 40px;
+    padding-left : 30px;
+    width : 30%;
+}
+
+.icon{
+    width : 25px;
+    padding-right : 5px;
+}
+
+.main-view {
+    display: flex;
+    align-items: flex-start; /* aligns top of both divs */
+    gap: 20px; /* optional spacing between columns */
+}
+
+.previewbox {
+    flex-grow: 1;
+    padding: 10px;
+    overflow: auto;
+    height: 100vh; /* match the PDF height */
+}
+
+
+.pdf-view {
+    width: 100%;
+    height: 100vh; /* fill full viewport height */
+    display: block;
+    border: none; /* optional: removes default border */
+}

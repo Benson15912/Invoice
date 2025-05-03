@@ -1,5 +1,8 @@
 package com.example.demo.storage;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -80,6 +83,63 @@ public class StorageService {
                     .collect(Collectors.toList());
         }
     }
+
+    public List<FileNode> listFilesAndFolders(Path rootDir) throws IOException {
+        List<FileNode> result = new ArrayList<>();
+
+        List<Path> paths = new ArrayList<>();
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(rootDir)) {
+            for (Path path : stream) {
+                if (Files.isDirectory(path)) {
+                    paths.add(path);
+                }
+            }
+        }
+
+        // Sort descending by folder name
+        paths.sort((a, b) -> b.getFileName().toString().compareTo(a.getFileName().toString()));
+
+        for (Path path : paths) {
+            String folderName = path.getFileName().toString();
+            FileNode folderNode = new FileNode(folderName, true, folderName);
+            addChildren(folderNode, path, folderName);
+            result.add(folderNode);
+        }
+
+        return result;
+    }
+
+
+    private void addChildren(FileNode parentNode, Path currentPath, String parentPathString) {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(currentPath)) {
+            List<Path> childrenPaths = new ArrayList<>();
+            for (Path path : stream) {
+                childrenPaths.add(path);
+            }
+
+//            // Sort descending by name
+//            childrenPaths.sort((a, b) -> b.getFileName().toString().compareTo(a.getFileName().toString()));
+
+            for (Path path : childrenPaths) {
+                String name = path.getFileName().toString();
+                String fullPath = parentPathString + "/" + name;
+
+                if (Files.isDirectory(path)) {
+                    FileNode folderNode = new FileNode(name, true, fullPath);
+                    parentNode.addChild(folderNode);
+                    addChildren(folderNode, path, fullPath);
+                } else {
+                    FileNode fileNode = new FileNode(name, false, fullPath);
+                    parentNode.addChild(fileNode);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace(); // or log
+        }
+    }
+
+
+
 
     // Delete a file from storage
     public void deleteFile(String fileName) throws IOException {
