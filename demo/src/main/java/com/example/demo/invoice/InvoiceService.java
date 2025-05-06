@@ -22,6 +22,17 @@ import java.time.Month;
 @Service
 public class InvoiceService {
 
+    /**
+     * Generates an invoice in PDF format for a given student based on the provided parameters.
+     *
+     * @param studentId The unique identifier of the student.
+     * @param name The name of the student.
+     * @param rate The monetary rate charged for each lesson.
+     * @param date The date string representing the target month and year, formatted as ISO-8601 (e.g., "yyyy-MM-dd").
+     * @param day The day of the week used to calculate the number of lessons (e.g., "Monday").
+     * @return A byte array representing the generated PDF invoice.
+     * @throws IOException If an error occurs during the PDF generation process.
+     */
     public byte[] generateInvoice(Long studentId, String name, double rate, String date, String day) throws IOException {
         Month month = getMonth(date); // returns Month
         int year = getYear(date);
@@ -37,6 +48,18 @@ public class InvoiceService {
         );
     }
 
+    /**
+     * Generates a PDF invoice document based on the provided input data.
+     *
+     * @param studentId the ID of the student for whom the invoice is generated
+     * @param name the name of the student
+     * @param rate the rate per lesson in SGD
+     * @param month the month for which the invoice is generated
+     * @param year the year for which the invoice is generated
+     * @param numberOfLessons the total number of lessons attended in the specified month
+     * @return a byte array representing the generated PDF document
+     * @throws IOException if an error occurs while reading resource files or writing the PDF output
+     */
     public byte[] toPDF(Long studentId, String name, double rate, String month, int year, int numberOfLessons) throws IOException {
         double amount = rate * numberOfLessons;
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -126,8 +149,7 @@ public class InvoiceService {
     private int getYear(String date) {
         LocalDate parsedDate = LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
 
-        int year = parsedDate.getYear();
-        return year;
+        return parsedDate.getYear();
     }
 
     private int countDaysInMonth(int year, Month month, String day) {

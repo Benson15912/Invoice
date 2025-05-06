@@ -13,7 +13,7 @@
 }
 
 .icon{
-    width : 25px;
+    width : 20px;
     padding-right : 5px;
 }
 
@@ -36,4 +36,22 @@
     height: 100vh; /* fill full viewport height */
     display: block;
     border: none; /* optional: removes default border */
+}
+.button-icon {
+    display: inline-flex;
+    align-items: flex-end; /* aligns content inside the button */
+    vertical-align: text-bottom; /* aligns button itself with surrounding text */
+    justify-content: center;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+}
+.button-icon:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* subtle hover background */
+}
+
+/* Red hover for delete buttons */
+.delete-button:hover {
+    background-color: rgba(255, 0, 0, 0.2); /* light red background */
 }

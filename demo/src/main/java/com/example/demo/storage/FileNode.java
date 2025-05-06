@@ -3,6 +3,11 @@ package com.example.demo.storage;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The FileNode class represents a node in a file system hierarchy.
+ * Each node can be either a file or a folder. A folder node can
+ * contain child nodes representing its contents.
+ */
 public class FileNode {
     private String name;
     private boolean isFolder;
