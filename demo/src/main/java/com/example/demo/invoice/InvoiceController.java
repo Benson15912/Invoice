@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +44,7 @@ public class InvoiceController {
                                              @RequestParam String day) { //monday, tuesday etc
         try {
             byte[] pdf = invoiceService.generateInvoice(studentId, name, rate, date, day);
-            storageService.saveInvoice(pdf, name+".pdf", date);
+            String filePath = storageService.saveInvoice(pdf, name + ".pdf", date);
 
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (DateTimeParseException e) {
@@ -73,33 +75,34 @@ public class InvoiceController {
      *         HTTP 400 BAD REQUEST if the input is invalid (e.g., incorrect date format),
      *         or HTTP 500 INTERNAL SERVER ERROR for other exceptions.
      */
-    @Operation(summary = "Generates Invoice", description = "Generates invoices based on manual input")
     @PostMapping("/generateinvoice/manual")
-    public ResponseEntity<String> getInvoice(@RequestParam Long studentId,
-                                             @RequestParam String name,
-                                             @RequestParam double rate,
-                                             @RequestParam String date,     // e.g., "2025-05-01"
-                                             @RequestParam int numberOfLessons) {
+    public ResponseEntity<Map<String, String>> getInvoice(@RequestParam Long studentId,
+                                                          @RequestParam String name,
+                                                          @RequestParam double rate,
+                                                          @RequestParam String date,
+                                                          @RequestParam int numberOfLessons) {
         try {
             int year = LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE).getYear();
             String month = LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE).getMonth().toString();
-            byte[] pdf = invoiceService.toPDF(studentId,name,rate,month,year,numberOfLessons);
-            storageService.saveInvoice(pdf, name+".pdf", date);
+            byte[] pdf = invoiceService.toPDF(studentId, name, rate, month, year, numberOfLessons);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            String filePath = storageService.saveInvoice(pdf, name + ".pdf", date);
+
+            Map<String, String> response = new HashMap<>();
+            response.put("filePath", filePath);
+
+            return ResponseEntity.ok(response);
+
         } catch (DateTimeParseException e) {
-            // Invalid date format
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Error: Invalid date format. Please use yyyy-MM-dd format");
+                    .body(Map.of("error", "Invalid date format. Please use yyyy-MM-dd format"));
         } catch (IllegalArgumentException e) {
-            // Another invalid input
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Error: Illegal Argument" + e.getMessage());
+                    .body(Map.of("error", "Illegal Argument: " + e.getMessage()));
         } catch (Exception e) {
-            // Internal server error
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-
         }
     }
+
 
 }

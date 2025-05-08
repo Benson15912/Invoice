@@ -6,10 +6,21 @@
     font-size: 25px;
 }
 
-.filebox{
-    padding-top: 40px;
-    padding-left : 30px;
-    width : 30%;
+.main-view {
+    display: flex;
+    height: 90vh;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    overflow: hidden; /* prevent body scroll, only filebox will scroll */
+}
+
+.filebox {
+    width: 30%;
+    background-color: #ffffff;
+    border-right: 1px solid #e0e0e0;
+    padding: 16px;
+    overflow-y: auto;
+    max-height: 100vh; /* ensures scrollability if content is long */
 }
 
 .icon{
@@ -17,23 +28,9 @@
     padding-right : 5px;
 }
 
-.main-view {
-    display: flex;
-    align-items: flex-start; /* aligns top of both divs */
-    gap: 20px; /* optional spacing between columns */
-}
-
-.previewbox {
-    flex-grow: 1;
-    padding: 10px;
-    overflow: auto;
-    height: 100vh; /* match the PDF height */
-}
-
-
 .pdf-view {
     width: 100%;
-    height: 100vh; /* fill full viewport height */
+    height: 90vh; /* fill full viewport height */
     display: block;
     border: none; /* optional: removes default border */
 }
@@ -54,4 +51,97 @@
 /* Red hover for delete buttons */
 .delete-button:hover {
     background-color: rgba(255, 0, 0, 0.2); /* light red background */
+}
+
+.file-item {
+    cursor: pointer;
+    margin-right: 8px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.file-item:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* subtle grey hover */
+}
+
+.selected-file {
+    background-color: #dcefff; /* light blue */
+    border-radius: 4px;
+}
+
+
+.section-title {
+    margin-bottom: 16px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.previewbox {
+    flex: 1;
+    padding: 20px;
+    background-color: #fdfdfd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.no-preview {
+    color: #888;
+    font-style: italic;
+}
+
+
+.generate-invoice-page {
+    display: flex;
+    gap: 24px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+.invoice-form {
+    flex: 0 0 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background-color: #fff;
+    padding: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.invoice-form h2 {
+    margin-top: 0;
+}
+
+.invoice-form input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.invoice-form button {
+    margin-top: 8px;
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.invoice-form button:hover {
+    background-color: #45a049;
+}
+
+.invoice-preview {
+    flex: 1;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
 }

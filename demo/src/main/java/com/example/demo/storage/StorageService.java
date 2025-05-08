@@ -206,7 +206,7 @@ public boolean deleteFile(String filePath) throws IOException {
 //            System.out.println("File already exists, overwriting: " + targetLocation);
 //        }
 //
-//        // Save the file, using StandardOpenOption to make it more robust in a multi-threaded environment
+//        // Save the file, using StandardOpenOption to make it more robust in a multithreaded environment
 //        Files.write(targetLocation, pdfContent, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 //
 //        // Log success
@@ -215,20 +215,18 @@ public boolean deleteFile(String filePath) throws IOException {
 //
 
 
-    public void saveInvoice(byte[] pdfContent, String fileName, String date) throws IOException {
+    public String saveInvoice(byte[] pdfContent, String fileName, String date) throws IOException {
         Path targetFolder = createSubdirectory(date);
-
         Path targetLocation = targetFolder.resolve(fileName);
-        // Check if a file already exists and handle accordingly
+
         if (Files.exists(targetLocation)) {
             System.out.println("File already exists, overwriting: " + targetLocation);
         }
 
-        // Save the file, using StandardOpenOption to make it more robust in a multi-threaded environment
         Files.write(targetLocation, pdfContent, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+        System.out.println("File saved successfully to: " + targetLocation.toAbsolutePath());
 
-        // Log success
-        System.out.println("File saved successfully to: " + targetLocation.toAbsolutePath().toString());
+        return storageLocation.relativize(targetLocation).toString();
     }
     public Path createSubdirectory(String date) throws IOException {
         // Parse year and month from date (expected format: yyyy-MM-dd)

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./invoice.css";
 
-const List = ({ list, setDisplayPath, refreshData }) => {
+const List = ({ list, setDisplayPath, refreshData, displayPath })  => {
     const [isExpanded, setIsExpanded] = useState({});
 
     const handleToggle = (nodeName) => {
@@ -75,7 +75,7 @@ const List = ({ list, setDisplayPath, refreshData }) => {
                         </>
                     ) : (
                         <>
-                    <span
+                    <span className={`file-item ${displayPath === node.path ? "selected-file" : ""}`}
                         style={{ cursor: "pointer", marginRight: "8px" }}
                         onClick={() => handleFileClick(node.path)}
                     >
@@ -87,7 +87,7 @@ const List = ({ list, setDisplayPath, refreshData }) => {
                         </>
                     )}
                     {isExpanded[node.name] && node.children && (
-                        <List list={node.children} setDisplayPath={setDisplayPath} refreshData={refreshData} />
+                        <List list={node.children} setDisplayPath={setDisplayPath} refreshData={refreshData} displayPath={displayPath} />
                     )}
                 </div>
             ))}
@@ -115,15 +115,23 @@ function InvoiceView() {
     return (
         <div className="main-view">
             <div className="filebox">
-                <List list={data} setDisplayPath={setDisplayPath} refreshData={refreshData} />
+                <h3 className="section-title">📂 Invoice Folder</h3>
+                <List
+                    list={data}
+                    setDisplayPath={setDisplayPath}
+                    refreshData={refreshData}
+                    displayPath={displayPath}
+                />
             </div>
             <div className="previewbox">
-                {displayPath && (
+                {displayPath ? (
                     <embed
                         className="pdf-view"
                         src={`http://localhost:8080/api/storage/view?filepath=${encodeURIComponent(displayPath)}`}
                         type="application/pdf"
                     />
+                ) : (
+                    <p className="no-preview">Select a file to preview</p>
                 )}
             </div>
         </div>
